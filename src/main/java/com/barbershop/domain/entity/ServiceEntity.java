@@ -9,7 +9,7 @@ import lombok.*;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class ServiceEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String name;
     @Column(columnDefinition = "text")

@@ -1,16 +1,24 @@
 package com.barbershop.infrastructure.controller;
 
 
+import com.barbershop.domain.entity.Client;
+import com.barbershop.domain.entity.User;
+import com.barbershop.domain.entity.model.Role;
 import com.barbershop.domain.repository.UserRepository;
 import com.barbershop.infrastructure.dto.AuthRequest;
 import com.barbershop.infrastructure.dto.RegisterRequest;
-import com.barbershop.domain.*;
 import com.barbershop.domain.repository.*;
 import com.barbershop.infrastructure.security.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+
+/**
+ * REST controller responsible for user authentication operations such as
+ * login and registration. Generates and returns JWT tokens for authenticated
+ * users, allowing them to access protected endpoints.
+ */
 
 @RestController
 @RequestMapping("/auth")
