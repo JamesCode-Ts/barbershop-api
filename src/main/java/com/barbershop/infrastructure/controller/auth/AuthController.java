@@ -1,4 +1,4 @@
-package com.barbershop.infrastructure.controller;
+package com.barbershop.infrastructure.auth;
 
 
 import com.barbershop.domain.entity.Client;

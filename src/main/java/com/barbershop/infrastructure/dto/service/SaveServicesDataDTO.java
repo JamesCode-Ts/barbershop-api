@@ -6,7 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class SaveServiceDataDTO {
+public class SaveServicesDataDTO {
 
     @NotBlank(message = "Name cannot be empty")
     @Size(min = 2, max = 120, message = "Invalid name size")
