@@ -24,7 +24,7 @@ public class Scheduling {
 
     @ManyToOne(optional=false)
     @JoinColumn(name="service_id")
-    private ServiceEntity service;
+    private Services service;
 
     @Column(name="date_time", nullable=false)
     private OffsetDateTime dateTime;

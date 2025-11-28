@@ -1,4 +1,4 @@
-package com.barbershop.infrastructure.dto;
+package com.barbershop.infrastructure.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

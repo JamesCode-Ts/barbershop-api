@@ -1,20 +1,25 @@
 package com.barbershop.domain.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
+import java.math.BigDecimal;
 
 @Entity
-@Table(name = "service")
+@Table(name = "services")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class ServiceEntity {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+public class Services {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(length = 36)
     private String id;
 
     private String name;
+
     @Column(columnDefinition = "text")
     private String description;
-    private java.math.BigDecimal price;
+
+    private BigDecimal price;
+
     private Integer durationMinutes;
 }
-

@@ -1,5 +1,6 @@
 package com.barbershop.infrastructure.dto.user;
 
+import com.barbershop.domain.entity.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,5 +23,5 @@ public class SaveUserDataDTO {
     private final String password;
 
     @NotNull(message = "Role cannot be null")
-    private final String role;  // ADMIN, BARBER, CLIENT
+    private final Role role;  // ADMIN, BARBER, CLIENT
 }

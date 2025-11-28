@@ -1,6 +1,6 @@
 package com.barbershop.infrastructure.dto.service;
 
-import com.barbershop.domain.entity.ServiceEntity;
+import com.barbershop.domain.entity.Services;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,7 +14,7 @@ public class ServiceDTO {
     private final BigDecimal price;
     private final Integer durationMinutes;
 
-    public static ServiceDTO create(ServiceEntity service) {
+    public static ServiceDTO create(Services service) {
         return new ServiceDTO(
                 service.getId(),
                 service.getName(),

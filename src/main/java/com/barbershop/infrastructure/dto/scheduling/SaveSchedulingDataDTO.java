@@ -16,8 +16,8 @@ public class SaveSchedulingDataDTO {
     @NotBlank(message = "serviceId cannot be empty")
     private final String serviceId;
 
-    @NotNull(message = "dateTime cannot be null")
-    private final String dateTime; // enviado pelo front como ISO-8601 string
+    @NotBlank(message = "dateTime cannot be empty")
+    private final String dateTime; // ISO-8601 string sent from frontend
 
-    private final String status; // opcional: AGENDADO, CANCELADO, FINALIZADO
+    private final String status; // AGENDADO, CANCELADO, FINALIZADO
 }
