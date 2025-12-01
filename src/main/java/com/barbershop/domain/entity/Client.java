@@ -10,5 +10,13 @@ import lombok.*;
 @NoArgsConstructor
 public class Client extends User {
 
+    public Client(User user) {
+        super(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole()
+        );
+    }
 }
-

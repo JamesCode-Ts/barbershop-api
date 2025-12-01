@@ -8,12 +8,20 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Barber extends User {
 
     @ManyToOne
-    @JoinColumn(name = "barbershop_id")
     private Barbershop barbershop;
 
+    public Barber(User user) {
+        super(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole()
+        );
+    }
 }
+
 

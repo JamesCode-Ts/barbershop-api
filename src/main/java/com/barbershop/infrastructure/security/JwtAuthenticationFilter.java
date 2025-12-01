@@ -12,15 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-/**
- * Custom authentication filter that intercepts every HTTP request,
- * extracts the JWT token from the Authorization header, validates it,
- * loads the corresponding user from the database, and sets the
- * authentication inside the SecurityContext if the token is valid.
- *
- * This filter ensures that protected endpoints are accessed only by
- * authenticated users.
- */
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -39,6 +30,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        // 🔥 IMPORTANTÍSSIMO: não validar JWT nas rotas públicas
+        if (path.startsWith("/auth") || path.startsWith("/h2-console")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
 

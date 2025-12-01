@@ -30,20 +30,23 @@ public class AuthService {
             throw new RuntimeException("Email já cadastrado");
         }
 
-        User user = new User();
-        user.setName(req.getName());
-        user.setEmail(req.getEmail());
-        user.setPassword(passwordEncoder.encode(req.getPassword()));
-        user.setRole(Role.CLIENT);
-        userRepository.save(user);
-
+        // Criando APENAS o Client (que já é User)
         Client client = new Client();
-        client.setId(user.getId());
-        clientRepository.save(client);
+        client.setName(req.getName());
+        client.setEmail(req.getEmail());
+        client.setPassword(passwordEncoder.encode(req.getPassword()));
+        client.setRole(Role.CLIENT);
 
-        String token = generateToken(user);
+        clientRepository.save(client); // isso insere users + client
 
-        return new AuthResponseDTO(user.getId(), user.getName(), user.getEmail(), token);
+        String token = generateToken(client);
+
+        return new AuthResponseDTO(
+                client.getId(),
+                client.getName(),
+                client.getEmail(),
+                token
+        );
     }
 
     public AuthResponseDTO login(AuthRequest req) {
@@ -57,7 +60,12 @@ public class AuthService {
 
         String token = generateToken(user);
 
-        return new AuthResponseDTO(user.getId(), user.getName(), user.getEmail(), token);
+        return new AuthResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                token
+        );
     }
 
     private String generateToken(User user) {
