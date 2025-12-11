@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface BarbershopRepository extends JpaRepository<Barbershop, String> {
-
     Optional<Barbershop> findByName(String name);
+    Optional<Barbershop> findBySlug(String slug);
+    boolean existsBySlug(String slug);
 
-    boolean existsByName(String name);
 }

@@ -1,5 +1,6 @@
 package com.barbershop.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,10 @@ import lombok.*;
 public class Barber extends User {
 
     @ManyToOne
+    @JoinColumn(name = "barbershop_id")
+    @JsonBackReference
     private Barbershop barbershop;
+
 
     public Barber(User user) {
         super(

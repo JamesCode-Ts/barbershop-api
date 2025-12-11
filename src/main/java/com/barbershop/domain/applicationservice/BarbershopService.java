@@ -1,10 +1,11 @@
 package com.barbershop.domain.applicationservice;
 
 import com.barbershop.domain.entity.Barbershop;
+import com.barbershop.domain.exception.barbershop.BarbershopNotFoundException;
+import com.barbershop.domain.exception.barbershop.DuplicateBarbershopException;
 import com.barbershop.domain.repository.BarbershopRepository;
 import com.barbershop.infrastructure.dto.barbershop.SaveBarbershopDataDTO;
-import com.barbershop.domain.exception.barbershop.DuplicateBarbershopException;
-import com.barbershop.domain.exception.barbershop.BarbershopNotFoundException;
+import com.barbershop.infrastructure.util.SlugUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,24 @@ public class BarbershopService {
         barbershop.setAddress(saveData.getAddress());
         barbershop.setPhone(saveData.getPhone());
 
-        barbershopRepository.save(barbershop);
+        // ============================================
+        // SLUG AUTO-GERADO
+        // ============================================
+        String baseSlug = SlugUtil.toSlug(saveData.getName());
+        String finalSlug = baseSlug;
 
-        return barbershop;
+        while (barbershopRepository.existsBySlug(finalSlug)) {
+            finalSlug = baseSlug + SlugUtil.uniqueSuffix();
+        }
+
+        barbershop.setSlug(finalSlug);
+        // ============================================
+
+        return barbershopRepository.save(barbershop);
+    }
+    public Barbershop loadBySlug(String slug) {
+        return barbershopRepository.findBySlug(slug)
+                .orElseThrow(() -> new BarbershopNotFoundException("Slug: " + slug));
     }
 
     // ============================================================
@@ -71,7 +87,17 @@ public class BarbershopService {
         barbershop.setAddress(saveData.getAddress());
         barbershop.setPhone(saveData.getPhone());
 
-        return barbershop; // JPA autoupdate
+        // Regerar slug apenas se o nome mudou
+        String newSlug = SlugUtil.toSlug(saveData.getName());
+        String finalSlug = newSlug;
+
+        while (barbershopRepository.existsBySlug(finalSlug)) {
+            finalSlug = newSlug + SlugUtil.uniqueSuffix();
+        }
+
+        barbershop.setSlug(finalSlug);
+
+        return barbershop; // JPA atualiza automaticamente
     }
 
     // ============================================================

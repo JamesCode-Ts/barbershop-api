@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -30,14 +29,13 @@ public class AuthService {
             throw new RuntimeException("Email já cadastrado");
         }
 
-        // Criando APENAS o Client (que já é User)
         Client client = new Client();
         client.setName(req.getName());
         client.setEmail(req.getEmail());
         client.setPassword(passwordEncoder.encode(req.getPassword()));
         client.setRole(Role.CLIENT);
 
-        clientRepository.save(client); // isso insere users + client
+        clientRepository.save(client);
 
         String token = generateToken(client);
 
@@ -45,6 +43,8 @@ public class AuthService {
                 client.getId(),
                 client.getName(),
                 client.getEmail(),
+                client.getRole().name(),
+                null,                 // sem barbershop no cadastro
                 token
         );
     }
@@ -60,10 +60,18 @@ public class AuthService {
 
         String token = generateToken(user);
 
+        String barbershopId = null;
+        if (user instanceof com.barbershop.domain.entity.Barber barber &&
+                barber.getBarbershop() != null) {
+            barbershopId = barber.getBarbershop().getId();
+        }
+
         return new AuthResponseDTO(
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
+                user.getRole().name(),
+                barbershopId,
                 token
         );
     }

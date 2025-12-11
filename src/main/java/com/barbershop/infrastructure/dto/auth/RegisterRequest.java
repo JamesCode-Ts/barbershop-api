@@ -19,4 +19,7 @@ public class RegisterRequest {
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 6, max = 100, message = "Invalid password size")
     private String password;
+
+    @NotBlank(message = "Barbershop slug cannot be empty")
+    private String barbershopSlug; // <-- NOVO!
 }

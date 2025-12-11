@@ -1,12 +1,16 @@
 package com.barbershop.infrastructure.dto.auth;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class AuthResponseDTO {
 
-    private final String id;
-    private final String name;
-    private final String email;
-    private final String token;
+    private String id;
+    private String name;
+    private String email;
+    private String role;
+    private String barbershopId;  // ou slug, se preferir
+    private String token;
 }

@@ -34,17 +34,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+
         http
-                .cors(cors -> {}) // 🚀 HABILITA CORS
+                .cors(cors -> {
+                }) // 🚀 HABILITA CORS
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 🚀 LIBERA PREFLIGHT
                         .requestMatchers("/auth/**", "/h2-console/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/barbers").hasAnyRole("BARBERSHOP_ADMIN", "MASTER_ADMIN")
+                        .requestMatchers("/barbers/**").hasAnyRole("BARBERSHOP_ADMIN", "MASTER_ADMIN")
                         .anyRequest().authenticated()
                 )
+
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+
 
         return http.build();
     }
