@@ -22,4 +22,9 @@ public class Services {
     private BigDecimal price;
 
     private Integer durationMinutes;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "barbershop_id")
+    private Barbershop barbershop;
+
 }

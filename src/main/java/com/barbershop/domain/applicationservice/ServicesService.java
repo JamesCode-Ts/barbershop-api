@@ -1,10 +1,12 @@
 package com.barbershop.domain.applicationservice;
 
+import com.barbershop.domain.entity.Barbershop;
 import com.barbershop.domain.entity.Services;
 import com.barbershop.domain.exception.service.DuplicateServicesException;
 import com.barbershop.domain.exception.service.ServicesNotFoundException;
+import com.barbershop.domain.repository.BarbershopRepository;
 import com.barbershop.domain.repository.ServicesRepository;
-import com.barbershop.infrastructure.dto.service.SaveServicesDataDTO;
+import com.barbershop.infrastructure.dto.services.SaveServicesDataDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +20,7 @@ import java.util.Objects;
 public class ServicesService {
 
     private final ServicesRepository servicesRepository;
+    private final BarbershopRepository barbershopRepository;
 
     /**
      * Create new service
@@ -28,11 +31,15 @@ public class ServicesService {
             throw new DuplicateServicesException(dto.getName());
         }
 
+        Barbershop barbershop = barbershopRepository.findById(dto.getBarbershopId())
+                .orElseThrow(() -> new RuntimeException("Barbershop not found."));
+
         Services s = new Services();
         s.setName(dto.getName());
         s.setDescription(dto.getDescription());
         s.setPrice(dto.getPrice());
         s.setDurationMinutes(dto.getDurationMinutes());
+        s.setBarbershop(barbershop);
 
         return servicesRepository.save(s);
     }
@@ -57,10 +64,14 @@ public class ServicesService {
 
         Services s = loadServiceById(id);
 
+        Barbershop barbershop = barbershopRepository.findById(dto.getBarbershopId())
+                .orElseThrow(() -> new RuntimeException("Barbershop not found."));
+
         s.setName(dto.getName());
         s.setDescription(dto.getDescription());
         s.setPrice(dto.getPrice());
         s.setDurationMinutes(dto.getDurationMinutes());
+        s.setBarbershop(barbershop);
 
         return s;
     }

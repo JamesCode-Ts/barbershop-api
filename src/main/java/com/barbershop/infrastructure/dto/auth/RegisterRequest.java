@@ -8,18 +8,16 @@ import lombok.Data;
 @Data
 public class RegisterRequest {
 
-    @NotBlank(message = "Name cannot be empty")
-    @Size(min = 2, max = 150, message = "Invalid name size")
+    @NotBlank
     private String name;
 
-    @NotBlank(message = "Email cannot be empty")
-    @Email(message = "Invalid email format")
+    @NotBlank
+    @Email
     private String email;
 
-    @NotBlank(message = "Password cannot be empty")
-    @Size(min = 6, max = 100, message = "Invalid password size")
+    @NotBlank
     private String password;
 
     @NotBlank(message = "Barbershop slug cannot be empty")
-    private String barbershopSlug; // <-- NOVO!
+    private String slug;
 }

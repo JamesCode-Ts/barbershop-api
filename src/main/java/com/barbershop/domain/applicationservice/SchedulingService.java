@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.management.ServiceNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -37,6 +36,11 @@ public class SchedulingService {
 
         Services service = serviceRepository.findById(dto.getServiceId())
                 .orElseThrow(() -> new ServicesNotFoundException(dto.getServiceId()));
+
+        // VALIDATION: service must belong to the same barbershop as barber
+        if (!service.getBarbershop().getId().equals(barber.getBarbershop().getId())) {
+            throw new RuntimeException("Selected service does not belong to the barber's barbershop.");
+        }
 
         Scheduling scheduling = new Scheduling();
         scheduling.setClient(client);
@@ -64,24 +68,27 @@ public class SchedulingService {
 
         Scheduling scheduling = loadSchedulingById(id);
 
-        // Update client if changed
         if (dto.getClientId() != null) {
             Client client = clientRepository.findById(dto.getClientId())
                     .orElseThrow(() -> new ClientNotFoundException(dto.getClientId()));
             scheduling.setClient(client);
         }
 
-        // Update barber if changed
         if (dto.getBarberId() != null) {
             Barber barber = barberRepository.findById(dto.getBarberId())
                     .orElseThrow(() -> new BarberNotFoundException(dto.getBarberId()));
             scheduling.setBarber(barber);
         }
 
-        // Update service if changed
         if (dto.getServiceId() != null) {
             Services service = serviceRepository.findById(dto.getServiceId())
                     .orElseThrow(() -> new ServicesNotFoundException(dto.getServiceId()));
+
+            // VALIDATION
+            if (!service.getBarbershop().getId().equals(scheduling.getBarber().getBarbershop().getId())) {
+                throw new RuntimeException("Service does not belong to this barber's barbershop.");
+            }
+
             scheduling.setService(service);
         }
 

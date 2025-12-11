@@ -1,4 +1,4 @@
-package com.barbershop.infrastructure.dto.service;
+package com.barbershop.infrastructure.dto.services;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -22,4 +22,7 @@ public class SaveServicesDataDTO {
     @NotNull(message = "Duration cannot be null")
     @Min(value = 1, message = "Duration must be at least 1 minute")
     private final Integer durationMinutes;
+
+    @NotBlank
+    private String barbershopId; // novo!
 }

@@ -10,13 +10,13 @@ public class SaveClientDataDTO {
 
     @NotBlank(message = "Name cannot be empty")
     @Size(min = 2, max = 150, message = "Invalid name size")
-    private final String name;
+    private String name;
 
     @NotBlank(message = "Email cannot be empty")
     @Email(message = "Invalid email")
-    private final String email;
+    private String email;
 
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 6, max = 100, message = "Password too short")
-    private final String password;
+    private String password;
 }

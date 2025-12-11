@@ -3,32 +3,36 @@ package com.barbershop.infrastructure.dto.scheduling;
 import com.barbershop.domain.entity.Scheduling;
 import lombok.Data;
 
-import java.util.Optional;
-
 @Data
 public class SchedulingDTO {
 
     private final String id;
-    private final String clientId;
-    private final String barberId;
-    private final String serviceId;
-    private final String status;
     private final String dateTime;
+    private final String status;
 
-    public static SchedulingDTO create(Scheduling scheduling) {
+    private final String clientId;
+    private final String clientName;
+
+    private final String barberId;
+    private final String barberName;
+
+    private final String serviceId;
+    private final String serviceName;
+
+    public static SchedulingDTO create(Scheduling s) {
         return new SchedulingDTO(
-                scheduling.getId(),
-                Optional.ofNullable(scheduling.getClient())
-                        .map(c -> c.getId())
-                        .orElse(null),
-                Optional.ofNullable(scheduling.getBarber())
-                        .map(b -> b.getId())
-                        .orElse(null),
-                Optional.ofNullable(scheduling.getService())
-                        .map(s -> String.valueOf(s.getId()))   // 👈 CONVERSÃO IMPORTANTE
-                        .orElse(null),
-                scheduling.getStatus(),
-                scheduling.getDateTime().toString()
+                s.getId(),
+                s.getDateTime().toString(),
+                s.getStatus(),
+
+                s.getClient().getId(),
+                s.getClient().getName(),
+
+                s.getBarber().getId(),
+                s.getBarber().getName(),
+
+                s.getService().getId(),
+                s.getService().getName()
         );
     }
 }
