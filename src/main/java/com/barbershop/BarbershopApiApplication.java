@@ -30,6 +30,8 @@ public class BarbershopApiApplication {
 
                 userRepository.save(admin);
                 System.out.println(">>> ADMIN criado!");
+
+
             }
         };
     }

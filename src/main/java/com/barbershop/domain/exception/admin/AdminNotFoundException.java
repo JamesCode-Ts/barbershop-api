@@ -1,0 +1,7 @@
+package com.barbershop.domain.exception.admin;
+
+public class AdminNotFoundException extends RuntimeException {
+    public AdminNotFoundException(String message) {
+        super(message);
+    }
+}

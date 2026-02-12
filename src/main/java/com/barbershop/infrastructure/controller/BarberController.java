@@ -17,13 +17,13 @@ public class BarberController {
     private final BarberService barberService;
 
     // Somente ADMIN ou MASTER
-    @PreAuthorize("hasAnyRole('BARBERSHOP_ADMIN', 'MASTER_ADMIN')")
+    @PreAuthorize("hasAnyRole('MASTER_ADMIN')")
     @PostMapping
     public ResponseEntity<Barber> createBarber(@RequestBody SaveBarberDataDTO dto) {
         return ResponseEntity.ok(barberService.createBarber(dto));
     }
 
-    @PreAuthorize("hasAnyRole('BARBERSHOP_ADMIN', 'MASTER_ADMIN')")
+    @PreAuthorize("hasAnyRole('MASTER_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Barber> updateBarber(
             @PathVariable String id,
@@ -31,7 +31,7 @@ public class BarberController {
         return ResponseEntity.ok(barberService.updateBarber(id, dto));
     }
 
-    @PreAuthorize("hasAnyRole('BARBERSHOP_ADMIN', 'MASTER_ADMIN')")
+    @PreAuthorize("hasAnyRole('MASTER_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBarber(@PathVariable String id) {
         barberService.deleteBarber(id);

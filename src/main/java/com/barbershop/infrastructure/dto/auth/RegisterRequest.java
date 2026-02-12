@@ -20,4 +20,5 @@ public class RegisterRequest {
 
     @NotBlank(message = "Barbershop slug cannot be empty")
     private String slug;
+
 }

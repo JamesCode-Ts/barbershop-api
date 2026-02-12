@@ -18,6 +18,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegisterRequest req) {
         System.out.println("REQ CHEGOU: " + req);
+        System.out.println("SLUG RECEBIDO => " + req.getSlug());
         return ResponseEntity.ok(authService.register(req));
     }
 

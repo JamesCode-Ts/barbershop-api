@@ -11,6 +11,10 @@ public class AuthResponseDTO {
     private String name;
     private String email;
     private String role;
-    private String barbershopId;  // pode ser null
-    private String token;         // nunca pode ser null
+
+    private String barbershopId;
+    private String barbershopName;
+    private String barbershopSlug;
+
+    private String token;
 }

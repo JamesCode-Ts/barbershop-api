@@ -4,17 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "client")
+@Table(name = "admin")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Client extends User {
+public class Admin extends User {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "barbershop_id")
-    private Barbershop barbershop;
-
-    public Client(User user) {
+    public Admin(User user) {
         super(
                 user.getId(),
                 user.getName(),
@@ -24,4 +20,3 @@ public class Client extends User {
         );
     }
 }
-
