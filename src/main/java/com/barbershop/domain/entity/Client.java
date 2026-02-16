@@ -5,23 +5,14 @@ import lombok.*;
 
 @Entity
 @Table(name = "client")
+@DiscriminatorValue("CLIENT")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Client extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "barbershop_id")
+    @JoinColumn(name = "barbershop_id", nullable = false)
     private Barbershop barbershop;
-
-    public Client(User user) {
-        super(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getRole()
-        );
-    }
 }
 

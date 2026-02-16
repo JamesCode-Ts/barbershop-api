@@ -1,10 +1,13 @@
 package com.barbershop.domain.applicationservice;
 
 import com.barbershop.domain.entity.Barbershop;
+import com.barbershop.domain.entity.User;
+import com.barbershop.domain.entity.model.SubscriptionStatus;
 import com.barbershop.domain.exception.barbershop.BarbershopNotFoundException;
 import com.barbershop.domain.exception.barbershop.DuplicateBarbershopException;
 import com.barbershop.domain.repository.BarbershopRepository;
 import com.barbershop.infrastructure.dto.barbershop.SaveBarbershopDataDTO;
+import com.barbershop.infrastructure.dto.tenant.SaveTenantDTO;
 import com.barbershop.infrastructure.util.SlugUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -124,4 +127,34 @@ public class BarbershopService {
                 .filter(b -> !Objects.equals(b.getId(), idToExclude))
                 .isPresent();
     }
+    @Transactional
+    public Barbershop createTenant(SaveTenantDTO dto, User owner) {
+
+        if (barbershopRepository.existsBySlug(SlugUtil.toSlug(dto.getBarbershopName())))
+            throw new DuplicateBarbershopException(dto.getBarbershopName());
+
+        Barbershop shop = new Barbershop();
+        shop.setName(dto.getBarbershopName());
+        shop.setAddress(dto.getAddress());
+        shop.setPhone(dto.getPhone());
+        shop.setOwner(owner);
+
+        // slug
+        String baseSlug = SlugUtil.toSlug(dto.getBarbershopName());
+        String finalSlug = baseSlug;
+
+        while (barbershopRepository.existsBySlug(finalSlug)) {
+            finalSlug = baseSlug + SlugUtil.uniqueSuffix();
+        }
+
+        shop.setSlug(finalSlug);
+
+        // assinatura inicial
+        shop.setSubscriptionStatus(SubscriptionStatus.TRIAL);
+        shop.setTrialEndsAt(java.time.LocalDate.now().plusDays(7));
+        shop.setCreatedAt(java.time.LocalDateTime.now());
+
+        return barbershopRepository.save(shop);
+    }
+
 }

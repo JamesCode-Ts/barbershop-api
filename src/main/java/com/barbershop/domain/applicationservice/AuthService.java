@@ -58,38 +58,29 @@ public class AuthService {
     @Transactional(readOnly = true)
     public AuthResponseDTO login(AuthRequest req) {
 
-        // 1️⃣ CLIENT
-        var clientOpt = clientRepository.findByEmail(req.getEmail());
-        if (clientOpt.isPresent()) {
-
-            Client client = clientOpt.get();
-
-            if (!passwordEncoder.matches(req.getPassword(), client.getPassword()))
-                throw new RuntimeException("Senha inválida");
-
-            return buildResponse(client, client.getBarbershop());
-        }
-
-        // 2️⃣ BARBER / ADMIN
-        var barberOpt = barberRepository.findByEmail(req.getEmail());
-        if (barberOpt.isPresent()) {
-
-            Barber barber = barberOpt.get();
-
-            if (!passwordEncoder.matches(req.getPassword(), barber.getPassword()))
-                throw new RuntimeException("Senha inválida");
-
-            return buildResponse(barber, barber.getBarbershop());
-        }
-
-        // 3️⃣ MASTER (somente users)
         User user = userRepository.findByEmail(req.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword()))
             throw new RuntimeException("Senha inválida");
 
-        return buildResponse(user, null);
+        Barbershop shop = extractBarbershop(user);
+
+        return buildResponse(user, shop);
+    }
+
+    private Barbershop extractBarbershop(User user) {
+
+        if (user instanceof Client client)
+            return client.getBarbershop();
+
+        if (user instanceof Barber barber)
+            return barber.getBarbershop();
+
+        if (user instanceof Admin admin)
+            return admin.getBarbershop();
+
+        return null; // MASTER ou usuários sem tenant
     }
 
     // =========================

@@ -5,18 +5,12 @@ import lombok.*;
 
 @Entity
 @Table(name = "admin")
+@DiscriminatorValue("ADMIN")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Admin extends User {
 
-    public Admin(User user) {
-        super(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getRole()
-        );
-    }
+    @OneToOne(mappedBy = "owner")
+    private Barbershop barbershop;
 }

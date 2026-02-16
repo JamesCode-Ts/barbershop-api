@@ -6,26 +6,16 @@ import lombok.*;
 
 @Entity
 @Table(name = "barber")
+@DiscriminatorValue("BARBER")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Barber extends User {
 
-    @ManyToOne
-    @JoinColumn(name = "barbershop_id")
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "barbershop_id", nullable = false)
     private Barbershop barbershop;
-
-
-    public Barber(User user) {
-        super(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getRole()
-        );
-    }
 }
+
 
 

@@ -8,6 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "dtype") // 🔥 ESSENCIAL
 @Getter
 @Setter
 @NoArgsConstructor
